@@ -476,8 +476,8 @@ const Analytics = () => {
             <ChartCard title="Patent Family Sizes" description="Number of patent families by size (members per family)">
               {familyData.length > 0 ? (
                 <>
-                  <ResponsiveContainer width="100%" height={250}>
-                    <PieChart>
+                  <div className="h-[250px] w-full flex items-center justify-center">
+                    <PieChart width={400} height={250}>
                       <Pie
                         data={familyData}
                         cx="50%"
@@ -494,7 +494,7 @@ const Analytics = () => {
                       </Pie>
                       <Tooltip contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151' }} />
                     </PieChart>
-                  </ResponsiveContainer>
+                  </div>
                   <p className="text-xs text-gray-500 mt-2">
                     Larger families indicate broader international protection.
                   </p>
