@@ -16,11 +16,7 @@ import {
   X,
   Info
 } from "lucide-react";
-import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-  BarChart, Bar, PieChart, Pie, Cell,
-  ResponsiveContainer
-} from "recharts";
+// Recharts removed due to React 19 compatibility issues - using custom CSS visualizations instead.
 
 const API_BASE_URL = "http://localhost:8080/api";
 const getAuthHeader = () => {
@@ -476,24 +472,30 @@ const Analytics = () => {
             <ChartCard title="Patent Family Sizes" description="Number of patent families by size (members per family)">
               {familyData.length > 0 ? (
                 <>
-                  <div className="h-[250px] w-full flex items-center justify-center">
-                    <PieChart width={400} height={250}>
-                      <Pie
-                        data={familyData}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={({ name, percent }) => `${name} (${(percent * 100).toFixed(1)}%)`}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {familyData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151' }} />
-                    </PieChart>
+                  <div className="space-y-4 py-4">
+                    {familyData.map((entry, index) => (
+                      <div key={entry.name} className="space-y-1">
+                        <div className="flex justify-between text-sm items-center">
+                          <div className="flex items-center gap-2">
+                            <div 
+                              className="w-3 h-3 rounded-full" 
+                              style={{ backgroundColor: COLORS[index % COLORS.length] }} 
+                            />
+                            <span className="text-gray-700 dark:text-gray-300 font-medium">{entry.name}</span>
+                          </div>
+                          <span className="text-gray-900 dark:text-white font-bold">{entry.percentage}%</span>
+                        </div>
+                        <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full rounded-full transition-all duration-1000"
+                            style={{ 
+                              width: `${entry.percentage}%`,
+                              backgroundColor: COLORS[index % COLORS.length] 
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
                   <p className="text-xs text-gray-500 mt-2">
                     Larger families indicate broader international protection.
