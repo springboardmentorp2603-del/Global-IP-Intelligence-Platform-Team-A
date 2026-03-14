@@ -442,23 +442,26 @@ const Analytics = () => {
               const globalStartIndex = filingTrends.months.length - count;
               const max = Math.max(...slicedValues);
               return (
-                <div className="space-y-3">
+                <div className="space-y-4 pt-2">
                   {slicedMonths.map((month, index) => {
                     const value = slicedValues[index];
                     const percentage = max > 0 ? (value / max) * 100 : 0;
-                    const color = barColors[(globalStartIndex + index) % barColors.length];
+                    const colorClasses = barColors[index % barColors.length]; // cyclical colors
+                    
                     return (
-                      <div key={month} className="flex items-center gap-3">
-                        <span className="text-xs text-gray-500 dark:text-gray-400 w-8 font-medium">{month}</span>
-                        <div className="flex-1 h-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div key={month} className="group flex items-center gap-4">
+                        <span className="text-xs text-gray-400 dark:text-gray-500 w-10 font-bold uppercase tracking-wider">{month}</span>
+                        <div className="flex-1 h-3 bg-gray-50 dark:bg-gray-700/50 rounded-full overflow-hidden relative">
                           <div
-                            className={`h-full ${color} rounded-full transition-all duration-500`}
+                            className={`h-full ${colorClasses} rounded-full transition-all duration-700 ease-out group-hover:opacity-80 shadow-sm`}
                             style={{ width: `${percentage}%` }}
                           />
                         </div>
-                        <span className="text-xs text-gray-600 dark:text-gray-400 w-8 text-right font-semibold">
-                          {value}
-                        </span>
+                        <div className="w-10 text-right">
+                          <span className="text-sm font-bold text-gray-700 dark:text-gray-200 group-hover:text-blue-500 transition-colors">
+                            {value}
+                          </span>
+                        </div>
                       </div>
                     );
                   })}
@@ -552,6 +555,33 @@ const Analytics = () => {
                 </>
               ) : (
                 <EmptyState message="No assignee data for this period" />
+              )}
+            </ChartCard>
+
+            <ChartCard title="Top Cited Patents" description="Patents with the highest citation impact">
+              {topCitedData.length > 0 ? (
+                <div className="space-y-4">
+                  {topCitedData.slice(0, 5).map((p, idx) => (
+                    <div key={idx} className="space-y-1">
+                      <div className="flex justify-between text-sm items-center">
+                        <span className="text-gray-700 dark:text-gray-300 font-medium truncate pr-4 max-w-[200px]" title={p.title}>
+                          {p.title}
+                        </span>
+                        <span className="text-blue-600 dark:text-blue-400 font-bold whitespace-nowrap">{p.citationCount}</span>
+                      </div>
+                      <div className="h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-blue-500 rounded-full transition-all duration-1000"
+                          style={{ 
+                            width: `${Math.min(100, (p.citationCount / (topCitedData[0]?.citationCount || 1)) * 100)}%` 
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <EmptyState message="No citation data available" />
               )}
             </ChartCard>
 
