@@ -13,7 +13,7 @@ import RegistrationChoice from "../Pages/RegistrationChoice";
 import AnalystRegistration from "../Pages/AnalystRegistration";
 import AdminRequestManagement from "../Pages/AdminRequestManagement";
 import SystemLogs from "../Pages/SystemLogs.jsx";
-import UserLogs from "../Pages/UserLogs.jsx";
+import ActivityLogs from "../Pages/ActivityLogs.jsx";
 import Profile from "../Pages/Profile.jsx";
 import EditProfile from "../Pages/EditProfile.jsx";
 import UpdatePassword from "../Pages/UpdatePassword.jsx";
@@ -62,7 +62,7 @@ const AppRoutes = () => {
       <Route
         path="/search"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute feature="SEARCH">
             <SearchPage />
           </ProtectedRoute>
         }
@@ -70,7 +70,7 @@ const AppRoutes = () => {
       <Route
         path="/ip/:id"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute feature="SEARCH">
             <IPDetails />
           </ProtectedRoute>
         }
@@ -78,7 +78,7 @@ const AppRoutes = () => {
       <Route
         path="/alerts"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute feature="TRACKING">
             <Alerts />
           </ProtectedRoute>
         }
@@ -86,19 +86,26 @@ const AppRoutes = () => {
 
       {/* Role-specific dashboards */}
       <Route
-        path="/user-dashboard"
+        path="/admin-dashboard"
         element={
-          <ProtectedRoute role="USER">
-            <UserDashboard />
+          <ProtectedRoute feature="ADMIN_DASHBOARD">
+            <AdminDashboard />
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/analyst-dashboard"
         element={
-          <ProtectedRoute role="ANALYST">
+          <ProtectedRoute feature="ANALYST_DASHBOARD">
             <AnalystDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/user-dashboard"
+        element={
+          <ProtectedRoute feature="USER_DASHBOARD">
+            <UserDashboard />
           </ProtectedRoute>
         }
       />
@@ -106,17 +113,8 @@ const AppRoutes = () => {
       <Route
         path="/analytics"
         element={
-          <ProtectedRoute role="ANALYST">
+          <ProtectedRoute feature="ANALYTICS">
             <Analytics />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/admin-dashboard"
-        element={
-          <ProtectedRoute role="ADMIN">
-            <AdminDashboard />
           </ProtectedRoute>
         }
       />
@@ -124,8 +122,8 @@ const AppRoutes = () => {
       <Route
         path="/admin/users"
         element={
-          <ProtectedRoute role="ADMIN">
-            <div><UserLogs /></div>
+          <ProtectedRoute feature="USER_MANAGEMENT">
+            <AdminDashboard />
           </ProtectedRoute>
         }
       />
@@ -133,8 +131,17 @@ const AppRoutes = () => {
       <Route
         path="/admin/logs"
         element={
-          <ProtectedRoute role="ADMIN">
+          <ProtectedRoute feature="API_MONITORING">
             <div><SystemLogs /></div>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/activity"
+        element={
+          <ProtectedRoute feature="API_MONITORING">
+            <ActivityLogs />
           </ProtectedRoute>
         }
       />
@@ -142,7 +149,7 @@ const AppRoutes = () => {
       <Route
         path="/admin/analyst-requests"
         element={
-          <ProtectedRoute role="ADMIN">
+          <ProtectedRoute feature="USER_MANAGEMENT">
             <AdminRequestManagement />
           </ProtectedRoute>
         }
@@ -153,4 +160,4 @@ const AppRoutes = () => {
   );
 };
 
-export default AppRoutes;   
+export default AppRoutes;
