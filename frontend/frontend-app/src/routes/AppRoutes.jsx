@@ -14,12 +14,19 @@ import AnalystRegistration from "../Pages/AnalystRegistration";
 import AdminRequestManagement from "../Pages/AdminRequestManagement";
 import SystemLogs from "../Pages/SystemLogs.jsx";
 import ActivityLogs from "../Pages/ActivityLogs.jsx";
+import UserLogs from "../Pages/UserLogs.jsx";
 import Profile from "../Pages/Profile.jsx";
 import EditProfile from "../Pages/EditProfile.jsx";
 import UpdatePassword from "../Pages/UpdatePassword.jsx";
 import OAuth2Success from "../Pages/OAuth2Success";
 
 import SearchPage from "../Pages/SearchPage";
+import StatusDashboard from "../Pages/StatusDashboard";
+import Subscriptions from "../Pages/Subscriptions.jsx";
+import ApiMonitoring from "../Pages/APIMonitoring.jsx";
+
+// ✅ ADD THIS LINE
+import ApiLogs from "../Pages/ApiLogs.jsx";
 
 const AppRoutes = () => {
   return (
@@ -33,7 +40,6 @@ const AppRoutes = () => {
       <Route path="/register/user" element={<Register />} />
       <Route path="/register/analyst" element={<AnalystRegistration />} />
 
-
       {/* Protected Routes */}
       <Route
         path="/profile"
@@ -43,6 +49,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/profile/edit"
         element={
@@ -51,6 +58,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/profile/update-password"
         element={
@@ -59,6 +67,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/search"
         element={
@@ -67,6 +76,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/ip/:id"
         element={
@@ -75,6 +85,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/alerts"
         element={
@@ -122,8 +133,8 @@ const AppRoutes = () => {
       <Route
         path="/admin/users"
         element={
-          <ProtectedRoute feature="USER_MANAGEMENT">
-            <AdminDashboard />
+          <ProtectedRoute role="ADMIN">
+            <UserLogs />
           </ProtectedRoute>
         }
       />
@@ -131,8 +142,27 @@ const AppRoutes = () => {
       <Route
         path="/admin/logs"
         element={
-          <ProtectedRoute feature="API_MONITORING">
-            <div><SystemLogs /></div>
+          <ProtectedRoute role="ADMIN">
+            <SystemLogs />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/apihealth"
+        element={
+          <ProtectedRoute role="ADMIN">
+            <ApiMonitoring />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* ✅ NEW API LOGS ROUTE */}
+      <Route
+        path="/admin/apilogs"
+        element={
+          <ProtectedRoute role="ADMIN">
+            <ApiLogs />
           </ProtectedRoute>
         }
       />
@@ -151,6 +181,24 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute feature="USER_MANAGEMENT">
             <AdminRequestManagement />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/subscriptions"
+        element={
+          <ProtectedRoute>
+            <Subscriptions />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/status-dashboard"
+        element={
+          <ProtectedRoute>
+            <StatusDashboard />
           </ProtectedRoute>
         }
       />
